@@ -1,6 +1,5 @@
 package com.example.methodget
 
-import android.app.DownloadManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -22,9 +21,9 @@ class MainActivity : AppCompatActivity() {
 
         binding.btnUpdatePokemon.setOnClickListener {
             val cantidad = Integer.parseInt(binding.etPokemonAmount.text.toString())
-            Log.i("ENTRADA", cantidad.toString())
             getPokemonList(cantidad)
         }
+
 
     }
 
@@ -33,6 +32,8 @@ class MainActivity : AppCompatActivity() {
 
         val jsonRequest = JsonObjectRequest(url, Response.Listener<JSONObject>{response ->
             Log.i("JSONRESPONSE", response.toString())
+            val pokemonData = response.getJSONArray("results")
+            binding.rvPokemonEntries.adapter = MainAdapter(pokemonData)
         },
         Response.ErrorListener { error ->
             Log.w("JSONRESPONSE", error.message as String)
